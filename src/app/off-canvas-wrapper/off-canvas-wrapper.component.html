@@ -1,0 +1,28 @@
+<div class="offcanvas-header border">
+  <h5 class="offcanvas-title">{{ options?.title }}</h5>
+  <button type="button" class="btn-close text-reset" (click)="close()"></button>
+</div>
+
+<div class="offcanvas-body">
+  <ng-template #dynamicContent></ng-template>
+</div>
+
+<div
+  class="offcanvas-footer d-flex border p-3 justify-content-end mt-3"
+  *ngIf="options?.showFooter"
+>
+  <button
+    *ngIf="options?.primaryButtonText"
+    class="btn me-2"
+    (click)="onPrimaryClick()"
+  >
+    {{ options.primaryButtonText }}
+  </button>
+  <button
+    *ngIf="options?.secondaryButtonText"
+    class="btn"
+    (click)="onSecondaryClick()"
+  >
+    {{ options.secondaryButtonText }}
+  </button>
+</div>
