@@ -25,7 +25,7 @@ export class NavbarComponent {
   openSidenav() {
     const options: OffCanvasOptions = {
       component: SidenavComponent,
-      title: 'TalentRx',
+      title: 'Generic OffCanvas',
       primaryButtonText: 'Submit',
       secondaryButtonText: 'Cancel',
       closeOnPrimaryButtonClick: true,
@@ -39,17 +39,26 @@ export class NavbarComponent {
         menuItems: this.menuItems(),
       },
       showFooter: true,
+
+      // Pass data through options
+      primaryButtonAction: (data) => {
+        console.log('Saved from sidenav:', data);
+        this.menuItems.set(data);
+      },
+
+      // Pass data through options
+      secondaryButtonAction: (data) => {
+        console.log('Cancelled:', data);
+      },
       returnValue: () => this.menuItems(),
     };
 
     const canvasRef = this.offCanvasService.open(options);
 
+    // OffCanvas way to pass data
     canvasRef.result.then(
       (result) => {
-        console.log(result);
-        if (result?.action !== 'secondary') {
-          this.menuItems.set(result);
-        }
+        this.menuItems.set(result);
       },
       () => console.log('Dismissed'),
     );

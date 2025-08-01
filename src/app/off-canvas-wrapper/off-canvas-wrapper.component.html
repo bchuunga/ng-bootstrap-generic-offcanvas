@@ -1,28 +1,62 @@
-<div class="offcanvas-header border">
-  <h5 class="offcanvas-title">{{ options?.title }}</h5>
-  <button type="button" class="btn-close text-reset" (click)="close()"></button>
-</div>
+<ng-container *ngIf="options?.customHeaderTemplate; else defaultHeader">
+  <ng-container *ngTemplateOutlet="options.customHeaderTemplate ?? null">
+  </ng-container>
+</ng-container>
+
+<ng-template #defaultHeader>
+  <div
+    class="offcanvas-header border"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="options?.title"
+  >
+    <h5 class="offcanvas-title" tabindex="0">{{ options?.title }}</h5>
+    <button
+      type="button"
+      class="btn-close text-reset"
+      (click)="close()"
+    ></button>
+  </div>
+</ng-template>
 
 <div class="offcanvas-body">
   <ng-template #dynamicContent></ng-template>
 </div>
 
-<div
-  class="offcanvas-footer d-flex border p-3 justify-content-end mt-3"
-  *ngIf="options?.showFooter"
->
-  <button
-    *ngIf="options?.primaryButtonText"
-    class="btn me-2"
-    (click)="onPrimaryClick()"
+<ng-container *ngIf="options?.customFooterTemplate; else defaultFooter">
+  <ng-container
+    *ngTemplateOutlet="options.customFooterTemplate ?? null"
+  ></ng-container>
+</ng-container>
+
+<ng-template #defaultFooter>
+  <div
+    class="offcanvas-footer d-flex border p-3 justify-content-end mt-3"
+    *ngIf="options?.showFooter"
   >
-    {{ options.primaryButtonText }}
-  </button>
-  <button
-    *ngIf="options?.secondaryButtonText"
-    class="btn"
-    (click)="onSecondaryClick()"
-  >
-    {{ options.secondaryButtonText }}
-  </button>
-</div>
+    <button
+      class="btn me-2"
+      [disabled]="isPrimaryLoading"
+      *ngIf="options?.primaryButtonText"
+      (click)="onPrimaryClick()"
+    >
+      <span
+        *ngIf="isPrimaryLoading"
+        class="spinner-border spinner-border-sm me-1"
+      ></span>
+      {{ options.primaryButtonText }}
+    </button>
+    <button
+      class="btn"
+      [disabled]="isSecondaryLoading"
+      *ngIf="options?.secondaryButtonText"
+      (click)="onSecondaryClick()"
+    >
+      <span
+        *ngIf="isSecondaryLoading"
+        class="spinner-border spinner-border-sm me-1"
+      ></span>
+      {{ options.secondaryButtonText }}
+    </button>
+  </div>
+</ng-template>
